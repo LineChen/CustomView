@@ -17,7 +17,7 @@ import com.beiing.customview.R;
 
 /**
  * Created by chenliu on 2016/8/24 0024<br/>.
- * 描述：
+ * 描述：测试橡皮擦效果
  */
 public class ClearFrogView extends View {
 
@@ -29,7 +29,6 @@ public class ClearFrogView extends View {
 
     private float mOriginX;
     private float mOriginY;
-
 
     private Bitmap mBgBitmap;
 
@@ -47,6 +46,9 @@ public class ClearFrogView extends View {
         super(context, attrs, defStyleAttr);
 
         init();
+
+        //设置绘制手指Path画笔属性
+        initFingerPaint();
     }
 
     @Override
@@ -55,18 +57,19 @@ public class ClearFrogView extends View {
         int width = getMeasuredWidth();
         int height = getMeasuredHeight();
 
-        mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        mCanvas = new Canvas(mBitmap);
-
-        //设置绘制手指Path画笔属性
-        initOutterPaint();
-
-        mCanvas.drawColor(Color.parseColor("#c0c0c0"));
-
+        initFrog(width, height);
     }
 
+    private void initFrog(int width, int height) {
+        mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        mCanvas = new Canvas(mBitmap);
+        mCanvas.drawColor(Color.parseColor("#c0c0c0"));
+    }
+
+
     //设置绘制手指Path画笔属性
-    private void initOutterPaint() {
+    private void initFingerPaint() {
+        mFingerPaint = new Paint();
         mFingerPaint.setColor(Color.RED);
         mFingerPaint.setAntiAlias(true);
         mFingerPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -77,7 +80,6 @@ public class ClearFrogView extends View {
     }
 
     private void init() {
-        mFingerPaint = new Paint();
         mFingerPath = new Path();
 
         mBgBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.t2);
@@ -90,6 +92,11 @@ public class ClearFrogView extends View {
             drawPath();
             canvas.drawBitmap(mBitmap, 0, 0, null);
         }
+    }
+
+    private void drawPath() {
+        mFingerPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+        mCanvas.drawPath(mFingerPath, mFingerPaint);
     }
 
     private Runnable mRunnable = new Runnable() {
@@ -125,10 +132,7 @@ public class ClearFrogView extends View {
         }
     };
 
-    private void drawPath() {
-        mFingerPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-        mCanvas.drawPath(mFingerPath, mFingerPaint);
-    }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
