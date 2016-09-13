@@ -92,6 +92,12 @@ public class ClearFrogView extends View {
         }
     }
 
+    private void drawPath() {
+        mFingerPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+        mCanvas.drawPath(mFingerPath, mFingerPaint);
+    }
+
+
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
@@ -125,10 +131,6 @@ public class ClearFrogView extends View {
         }
     };
 
-    private void drawPath() {
-        mFingerPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-        mCanvas.drawPath(mFingerPath, mFingerPaint);
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
