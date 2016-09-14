@@ -66,7 +66,7 @@ public class PtRefreshListView extends ListView implements AbsListView.OnScrollL
     }
 
     private void topPadding(int topPadding){
-        topPadding = Math.min(topPadding, 500);
+        topPadding = Math.min(topPadding, getMeasuredHeight() * 3 / 4);
         header.setPadding(header.getPaddingLeft(), topPadding, header.getPaddingRight(), header.getPaddingBottom());
         header.invalidate();
     }

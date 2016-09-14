@@ -63,7 +63,7 @@ public class PathEffectView extends View{
 
     //is called by animtor object
     public void setPhase(float phase) {
-        Log.e("pathview", "setPhase called with:" + String.valueOf(phase));
+//        Log.e("pathview", "setPhase called with:" + String.valueOf(phase));
         paint.setPathEffect(createPathEffect(length, phase, 0.0f));
         invalidate();//will calll onDraw
     }

@@ -5,9 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.beiing.customview.widgets.ColorTrackView;
 import com.beiing.customview.widgets.DynamicHeartView;
+import com.beiing.customview.widgets.ElasticTouchListener;
 import com.beiing.customview.widgets.PtRefreshListView;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        colorTrackView = (ColorTrackView) findViewById(R.id.color_tracker_view);
 
         dynamicHeartView = (DynamicHeartView) findViewById(R.id.dynamic_view);
         dynamicHeartView.startPathAnim(2000);
@@ -29,8 +30,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initPtrListView() {
-        PtRefreshListView refreshListView = (PtRefreshListView) findViewById(R.id.ptr_listview);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.item_listview, new String[]{"asdf", "ASD", "jdjlk", "sdfiou", "65asd"});
+        ListView refreshListView = (ListView) findViewById(R.id.ptr_listview);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.item_listview,
+                new String[]{"asdf", "ASD", "jdjlk", "sdfiou", "65asd", "asdf", "ASD", "jdjlk", "sdfiou", "65asd"});
         refreshListView.setAdapter(adapter);
     }
 
