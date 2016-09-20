@@ -16,22 +16,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
-    
+
     <com.beiing.customview.widgets.DynamicHeartView
         android:id="@+id/dynamic_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"/>
-
-    <com.beiing.customview.widgets.PathEffectView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:visibility="gone"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="@color/colorAccent"/>
 
     <ListView
         android:id="@+id/ptr_listview"
@@ -39,11 +29,11 @@
         android:layout_height="match_parent"
         android:divider="#666666"
         android:dividerHeight="2px"
-        android:visibility="visible"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="@color/colorAccent"/>
+        android:visibility="gone"/>
     
+    <com.beiing.customview.widgets.ToothView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="#22222222"/>
+
 </com.beiing.customview.widgets.ElasticLayout>
