@@ -34,6 +34,26 @@
     <com.beiing.customview.widgets.ToothView
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:background="#22222222"/>
+        android:background="#22222222"
+        android:visibility="gone"/>
+
+    <com.beiing.customview.widgets.WaveView
+        android:layout_width="100dp"
+        android:background="#ffffff"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+    
+    <com.beiing.customview.widgets.TailView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"/>
+
+    <com.beiing.customview.widgets.GestureView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
 
 </com.beiing.customview.widgets.ElasticLayout>
