@@ -7,13 +7,17 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathEffect;
 import android.graphics.PathMeasure;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.RadialGradient;
+import android.graphics.Shader;
 import android.graphics.Xfermode;
+import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -50,7 +54,7 @@ public class TailView extends View {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStrokeWidth(5);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.RED);
+//        paint.setColor(Color.RED);
 
         //-------------------------------------------------
         mFingerPath = new Path();
@@ -62,25 +66,36 @@ public class TailView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        mBitmap = Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-        mCanvas = new Canvas(mBitmap);
+        initBitmap();
+    }
+
+    private void initBitmap() {
+        if (mBitmap == null) {
+            mBitmap = Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+            mCanvas = new Canvas(mBitmap);
+        }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         paint.setStrokeWidth(5);
-        mCanvas.drawPath(mFingerPath, paint);
 
-        if(isStartClear){
-            paint.setXfermode(xfermode);
-            paint.setStrokeWidth(10);
-            mCanvas.drawPath(clearPath, paint);
-            paint.setXfermode(null);
-        }
+        RadialGradient shader = new RadialGradient(mOriginX, mOriginY, getRadius(mOriginX, mOriginY, mCurrentX, mCurrentY),
+                new int[]{Color.parseColor("#22ff0000"), Color.parseColor("#ff0000")}, new float[]{0.3f, 0.7f}, Shader.TileMode.CLAMP);
+        paint.setShader(shader);
 
-        canvas.drawBitmap(mBitmap, 0, 0, null);
 
+        canvas.drawPath(mFingerPath, paint);
+
+//        if(isStartClear){
+//            paint.setXfermode(xfermode);
+//            paint.setStrokeWidth(10);
+//            mCanvas.drawPath(clearPath, paint);
+//            paint.setXfermode(null);
+//        }
+//
+//        canvas.drawBitmap(mBitmap, 0, 0, null);
     }
 
     private boolean isStartClear = false;
@@ -93,6 +108,9 @@ public class TailView extends View {
     private static PathEffect createPathEffect(float pathLength, float phase, float offset) {
         return new DashPathEffect(new float[] { phase*pathLength, pathLength}, 0);
     }
+
+    private float mCurrentX;
+    private float mCurrentY;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -109,23 +127,16 @@ public class TailView extends View {
                     break;
 
                 case MotionEvent.ACTION_MOVE:
-                    float dx = Math.abs(x - mOriginX);
-                    float dy = Math.abs(y - mOriginY);
-                    if(dx > 3 || dy > 3){
-                        mFingerPath.lineTo(x, y);
-                        clearPath.lineTo(x, y);
-                    }
-
-                    mOriginX = x;
-                    mOriginY = y;
+                    mCurrentX = x;
+                    mCurrentY = y;
+                    mFingerPath.lineTo(x, y);
+                    clearPath.lineTo(x, y);
                     break;
 
                 case MotionEvent.ACTION_UP:
                     isStartClear = true;
-                    startDraw();
+//                    startDraw();
                     break;
-
-
             }
             invalidate();
             return true;
@@ -161,6 +172,15 @@ public class TailView extends View {
             }
         });
 
+    }
+
+
+    private float getRadius(float x0, float y0, float x1, float y1){
+        float radius = 0;
+        radius = (float) Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
+        if(radius == 0)
+            radius = 1f;
+        return radius;
     }
 
 }

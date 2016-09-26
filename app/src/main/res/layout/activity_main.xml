@@ -45,15 +45,26 @@
         android:visibility="gone"/>
 
     
-    <com.beiing.customview.widgets.TailView
+    <com.beiing.customview.widgets.DisappearingDoodleView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible"/>
+        android:layout_height="200dp"
+        android:visibility="gone"/>
+
+    <com.beiing.customview.widgets.DisappearingDoodleView2
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:visibility="gone"/>
 
     <com.beiing.customview.widgets.GestureView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
+
+    <com.beiing.customview.widgets.TailView2
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"/>
+
 
 
 </com.beiing.customview.widgets.ElasticLayout>
