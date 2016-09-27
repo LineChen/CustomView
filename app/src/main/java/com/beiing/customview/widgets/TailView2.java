@@ -16,11 +16,7 @@ import java.util.List;
 
 /**
  * Created by chenliu on 2016/9/26.<br/>
-<<<<<<< HEAD
- * 描述： 绘制一条逐渐变粗的路径
-=======
  * 描述：绘制一条宽度逐渐变大的路径
->>>>>>> fae987e878f129bf2c0503c80117f07e8de42ad0
  * </br>
  */
 public class TailView2 extends View{
@@ -122,37 +118,6 @@ public class TailView2 extends View{
         return true;
     }
 
-<<<<<<< HEAD
-    /**
-     * path分段：一段的长度
-     */
-    private static final float PATH_SEGMENT_LENGTH = 100f;
-    private static final float DEFAULT_WIDTH = 5;
-    private static final float MAX_WIDTH = 35;
-
-    private void getPaths(Path path){
-        PathMeasure pm = new PathMeasure(path, false);
-        float length = pm.getLength();
-        int size = (int) Math.ceil(length / PATH_SEGMENT_LENGTH);
-        PathElement pe = null;
-        Path ps = null;
-        pathElements.clear();
-
-        if(size == 1){
-            ps = new Path();
-            pm.getSegment(0  , length, ps,  true);
-            pe = new PathElement(ps);
-            pe.setWidth(DEFAULT_WIDTH);
-            pathElements.add(pe);
-        } else {
-            for (int i = 1; i < size; i++) {
-                ps = new Path();
-                pm.getSegment((i - 1) * 100f - 0.5f  , i * 100f, ps,  true);
-                pe = new PathElement(ps);
-                pe.setAlpha(200);
-                pe.setWidth(Math.min(i * 1.2f + DEFAULT_WIDTH, MAX_WIDTH));
-                pathElements.add(pe);
-=======
 
     /**
      * 越小，线条锯齿度越小
@@ -187,10 +152,8 @@ public class TailView2 extends View{
                 pe.setAlpha(255);
                 pe.setWidth((float) Math.min(MAX_WIDTH, i * 0.3 + DEFAULT_WIDTH));
                 pathSegments.add(pe);
->>>>>>> fae987e878f129bf2c0503c80117f07e8de42ad0
             }
         }
-
     }
 
 

@@ -116,10 +116,10 @@ public class TailView3 extends View{
                 break;
 
             case MotionEvent.ACTION_UP:
-                for (PathSegment ps :
-                        pathSegments) {
-                    Log.e("===", "alpha:" + ps.getAlpha());
-                }
+//                for (PathSegment ps :
+//                        pathSegments) {
+//                    ps.setAlpha(0);
+//                }
 
                 break;
         }
@@ -166,8 +166,33 @@ public class TailView3 extends View{
                 pathSegments.add(pe);
             }
         }
+
+        int alpha0Index = getAlpha0Index(segmentSize);
+        //MAX_WIDTH ~ MAX_WIDTH
+        for (int i = alpha0Index; i < segmentSize; i++) {
+            PathSegment pathSegment = pathSegments.get(i);
+            if (pathSegment != null) {
+                pathSegment.setWidth((float) Math.min(MAX_WIDTH, (i - alpha0Index + 1) * 0.3 + DEFAULT_WIDTH));
+            }
+        }
+
+        for (int i = 0; i<= alpha0Index; i++) {
+            pathSegments.get(i).setAlpha(0);
+        }
+
+
     }
 
+    private int getAlpha0Index(int segmentSize) {
+        for (int i = segmentSize - 1; i >= 0; i--) {
+            int alpha = pathSegments.get(i).getAlpha();
+            if(alpha <= 10)
+                return i;
+        }
+        return 0;
+    }
+
+    // 255 -0 : getAlpha0Index
     private void alphaPaths() {
         int size = pathSegments.size();
         int index = size - 1;
