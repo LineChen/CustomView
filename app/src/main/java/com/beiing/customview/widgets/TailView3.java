@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
+import android.os.Message;
+import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -15,11 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by chenliu on 2016/9/26.<br/>
- * 描述：绘制一条宽度逐渐变大的路径
- * </br>
+ * Created by chenliu on 2016/9/27.<br/>
+ * </br> 跟随手指的小尾巴
  */
-public class TailView2 extends View{
+public class TailView3 extends View{
     private Paint paint;
     private Path mFingerPath;
     private float mOriginX;
@@ -62,15 +63,15 @@ public class TailView2 extends View{
 
     }
 
-    public TailView2(Context context) {
+    public TailView3(Context context) {
         this(context, null, 0);
     }
 
-    public TailView2(Context context, AttributeSet attrs) {
+    public TailView3(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public TailView2(Context context, AttributeSet attrs, int defStyleAttr) {
+    public TailView3(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -85,13 +86,16 @@ public class TailView2 extends View{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        mElapsed = SystemClock.elapsedRealtime();
         for (PathSegment p: pathSegments) {
             paint.setAlpha(p.getAlpha());
             paint.setStrokeWidth(p.getWidth());
             canvas.drawPath(p.getPath(), paint);
         }
 
+        alphaPaths();
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -112,6 +116,11 @@ public class TailView2 extends View{
                 break;
 
             case MotionEvent.ACTION_UP:
+                for (PathSegment ps :
+                        pathSegments) {
+                    Log.e("===", "alpha:" + ps.getAlpha());
+                }
+
                 break;
         }
         invalidate();
@@ -125,6 +134,9 @@ public class TailView2 extends View{
     private static final float DEFAULT_SEGMENT_LENGTH = 10F;
     private static final float DEFAULT_WIDTH = 3F;
     private static final float MAX_WIDTH = 45F;
+    private static final int ALPHA_STEP = 8;
+
+    private long mElapsed;
 
     /**
      * 截取path
@@ -156,5 +168,41 @@ public class TailView2 extends View{
         }
     }
 
+    private void alphaPaths() {
+        int size = pathSegments.size();
+        int index = size - 1;
+        if(size == 0) return;
+        int baseAlpha = 255 - ALPHA_STEP;
+        int itselfAlpha;
+        PathSegment pe;
+        for(; index >=0 ; index--, baseAlpha -= ALPHA_STEP){
+            pe = pathSegments.get(index);
+            itselfAlpha = pe.getAlpha();
+            if(itselfAlpha == 255){
+                if(baseAlpha <= 0){
+                    ++index;
+                    break;
+                }
+                pe.setAlpha(baseAlpha);
+            }else{
+                itselfAlpha -= ALPHA_STEP;
+                if(itselfAlpha <= 0){
+                    ++index;
+                    break;
+                }
+                pe.setAlpha(itselfAlpha);
+            }
+        }
+
+        long interval = 40 - SystemClock.elapsedRealtime() - mElapsed;
+        if(interval < 0) interval = 0;
+
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                invalidate();
+            }
+        }, interval);
+    }
 
 }
