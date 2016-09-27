@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Created by chenliu on 2016/9/26.<br/>
- * 描述：
+ * 描述：绘制一条宽度逐渐变大的路径
  * </br>
  */
 public class TailView2 extends View{
@@ -25,14 +25,14 @@ public class TailView2 extends View{
     private float mOriginX;
     private float mOriginY;
 
-    private List<PathElement> pathElements;
+    private List<PathSegment> pathSegments;
 
-    private class PathElement{
+    private class PathSegment{
         Path path;
         float width;
         int alpha;
 
-        public PathElement(Path path) {
+        public PathSegment(Path path) {
             this.path = path;
         }
 
@@ -62,7 +62,6 @@ public class TailView2 extends View{
 
     }
 
-
     public TailView2(Context context) {
         this(context, null, 0);
     }
@@ -75,27 +74,22 @@ public class TailView2 extends View{
         super(context, attrs, defStyleAttr);
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setStrokeWidth(5);
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.RED);
 
         //-------------------------------------------------
-
         mFingerPath = new Path();
-
-        pathElements = new ArrayList<>();
+        pathSegments = new ArrayList<>();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        for (PathElement p: pathElements) {
+        for (PathSegment p: pathSegments) {
             paint.setAlpha(p.getAlpha());
             paint.setStrokeWidth(p.getWidth());
             canvas.drawPath(p.getPath(), paint);
         }
-//        canvas.drawPath(mFingerPath, paint);
 
     }
 
@@ -105,6 +99,7 @@ public class TailView2 extends View{
         float y = event.getY();
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
+                pathSegments.clear();
                 mOriginX = x;
                 mOriginY = y;
                 mFingerPath.reset();
@@ -113,46 +108,53 @@ public class TailView2 extends View{
 
             case MotionEvent.ACTION_MOVE:
                 getPaths(mFingerPath);
-//                if(getPathlength(mFingerPath) > 20){
-////                    mFingerPath.rMoveTo(x, y);
-////                    PathElement e = new PathElement(mFingerPath);
-////                    pathElements.add(e);
-//                    Log.e("====", "moveTo:" + x + "," + y);
-//                } else {
-//
-//                    Log.e("====", "lineTo:" + x + "," + y);
-//                }
-
                 mFingerPath.lineTo(x, y);
                 break;
 
             case MotionEvent.ACTION_UP:
-                Log.e("===", pathElements.size() + "...");
                 break;
         }
         invalidate();
         return true;
     }
 
+
+    /**
+     * 越小，线条锯齿度越小
+     */
+    private static final float DEFAULT_SEGMENT_LENGTH = 10F;
+    private static final float DEFAULT_WIDTH = 3F;
+    private static final float MAX_WIDTH = 45F;
+
+    /**
+     * 截取path
+     * @param path
+     */
     private void getPaths(Path path){
         PathMeasure pm = new PathMeasure(path, false);
         float length = pm.getLength();
-        int size = (int) (length / 50);
+        int segmentSize = (int) Math.ceil(length / DEFAULT_SEGMENT_LENGTH);
         Path ps = null;
-        PathElement pe = null;
-        pathElements.clear();
-        for (int i = 1; i < size; i++) {
+        PathSegment pe = null;
+        int nowSize = pathSegments.size();//集合中已经有的
+        if(nowSize == 0){
             ps = new Path();
-            pm.getSegment((i - 1) * 50f , i * 50f, ps,  true);
-            pe = new PathElement(ps);
+            pm.getSegment(0, length, ps, true);
+            pe = new PathSegment(ps);
             pe.setAlpha(255);
-            pe.setWidth(i * 2);
-            pathElements.add(pe);
+            pe.setWidth(DEFAULT_WIDTH);
+            pathSegments.add(pe);
+        } else{
+            for (int i = nowSize; i < segmentSize; i++) {
+                ps = new Path();
+                pm.getSegment((i - 1) * DEFAULT_SEGMENT_LENGTH - 0.4f, Math.min(i * DEFAULT_SEGMENT_LENGTH, length), ps,  true);
+                pe = new PathSegment(ps);
+                pe.setAlpha((int) (i * 0.3 + 100));
+                pe.setWidth((float) Math.min(MAX_WIDTH, i * 0.3 + DEFAULT_WIDTH));
+                pathSegments.add(pe);
+            }
         }
     }
-
-
-
 
 
 }
