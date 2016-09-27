@@ -52,7 +52,7 @@
 
     <com.beiing.customview.widgets.DisappearingDoodleView2
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         android:visibility="gone"/>
 
     <com.beiing.customview.widgets.GestureView
@@ -63,8 +63,11 @@
     <com.beiing.customview.widgets.TailView2
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+    <com.beiing.customview.widgets.TailView3
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:visibility="visible"/>
-
-
 
 </com.beiing.customview.widgets.ElasticLayout>
