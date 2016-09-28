@@ -35,6 +35,8 @@ public class TwoPageScrollView extends LinearLayout {
 
     private int mMaxScrollY;//最大移动距离
 
+    private int TO_NEXT_PAGE_HEIGHT = 550;//当再移动这个距离，就移动到下一页
+
     public TwoPageScrollView(Context context) {
         this(context, null, 0);
     }
@@ -57,8 +59,15 @@ public class TwoPageScrollView extends LinearLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         mMaxScrollY = getMeasuredHeight() * 3 / 5;
-    }
 
+        /**
+         * 显示调用第二个自孩子的测量方法，不然尺寸有可能为0
+         */
+        View child2 = getChildAt(1);
+        if (child2 != null) {
+            child2.measure(widthMeasureSpec, heightMeasureSpec);
+        }
+    }
 
     @Override
     protected void onFinishInflate() {
@@ -73,32 +82,16 @@ public class TwoPageScrollView extends LinearLayout {
                 scrollView2 = (ScrollEndScrollView) child2;
             }
         }
+
         initEvent();
     }
 
     private void initEvent() {
         if (scrollView1 != null) {
             scrollView1.addOnScrollEndListener(scrollEndListener);
-
-            scrollView1.setOnTouchListener(new OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    Log.e("------", "scrollView1:onTouch" );
-                    return false;
-                }
-            });
         }
         if (scrollView2 != null) {
             scrollView2.addOnScrollEndListener(scrollEndListener);
-
-            scrollView2.setOnTouchListener(new OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    Log.e("------", "scrollView1:onTouch" );
-                    return false;
-                }
-            });
-
         }
     }
 
@@ -132,16 +125,10 @@ public class TwoPageScrollView extends LinearLayout {
         }
     };
 
-
     protected int mMoveY;
     protected int mLastY;
 
-
     /**
-     * 1.scrollView1滑动到底部时,不松手继续往上拉,拉不动； 松手,再往上拉,可以拉动
-     *
-     * 2.scrollView2滑动到顶部时，不松手继续往下拉，拉不动； 松手，再往下拉，可以拉动
-     *
      * @param ev
      * @return
      */
@@ -158,7 +145,6 @@ public class TwoPageScrollView extends LinearLayout {
             case MotionEvent.ACTION_MOVE:
                 mMoveY = (mLastY - yPosition);
                 mLastY = yPosition;
-
                 if(isToBotttom){
                     if(mMoveY > 0){
                         //向上
@@ -167,32 +153,62 @@ public class TwoPageScrollView extends LinearLayout {
                     } else {
                         //向下
                         if(mScroller.getStartY() != 0){
-                            smoothScrollBy(0, mMoveY);
-                            return true;
+                            if(getScrollY() + mMoveY > 0){
+                                smoothScrollBy(0, mMoveY);
+                                return true;
+                            } else{
+                                smoothScrollTo(0, 0);
+                                return super.dispatchTouchEvent(ev);
+                            }
                         }
                         return super.dispatchTouchEvent(ev);
                     }
                 }
 
                if(isToTop){
-                    if(mMoveY > 0){
-                        //向上
-                        return super.dispatchTouchEvent(ev);
-                    } else {
+                    if(mMoveY < 0){
                         //向下
-                        smoothScrollBy(0, mMoveY / 2);
+                        smoothScrollBy(0, mMoveY);
                         return true;
+                    } else {
+                        //向上
+                        ////需要改进
+                        if(mScroller.getFinalY() != scrollView1.getHeight()){
+                            return true;
+                        }
+                        return super.dispatchTouchEvent(ev);
                     }
                 }
                 break;
 
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                //回弹
-                if(isToBotttom && Math.abs(mScroller.getStartY()) > 200){
-                    smoothScrollTo(0, scrollView2.getHeight());
-                } else {
-                    smoothScrollBy(0, -mScroller.getFinalY());
+                if(isToBotttom){
+                   if(Math.abs(getScrollY()) > TO_NEXT_PAGE_HEIGHT){
+                        //移动到第二页
+                       smoothScrollTo(0, scrollView1.getHeight());
+//                        if(mScroller.getFinalY() < scrollView1.getHeight()){
+//                            smoothScrollTo(0, scrollView1.getHeight());
+//                        }
+                        isToBotttom = false;
+                        isToTop = true;
+                    } else {
+                        //回弹
+                        smoothScrollBy(0, -mScroller.getFinalY());
+                    }
+                } else if(isToTop){
+                    if(scrollView1.getHeight() - getScrollY() > TO_NEXT_PAGE_HEIGHT){
+                        //移动到第一页
+                        smoothScrollTo(0, 0);
+//                        if(mScroller.getFinalY() != 0){
+//                            smoothScrollTo(0, 0);
+//                        }
+                        isToBotttom = true;
+                        isToTop = false;
+                    } else {
+                        //回弹
+                        smoothScrollTo(0, scrollView1.getHeight());
+                    }
                 }
 
                 break;
@@ -202,6 +218,8 @@ public class TwoPageScrollView extends LinearLayout {
 
         return super.dispatchTouchEvent(ev);
     }
+
+
 
 
     @Override
@@ -231,8 +249,9 @@ public class TwoPageScrollView extends LinearLayout {
         else
             dy = Math.max(dy, -mMaxScrollY);
         //设置mScroller的滚动偏移量
-        mScroller.startScroll(mScroller.getFinalX(), mScroller.getFinalY(), dx, dy, Math.abs(dy));
+        mScroller.startScroll(mScroller.getFinalX(), mScroller.getFinalY(), dx, dy, Math.max(300, Math.abs(dy)));
         invalidate();//这里必须调用invalidate()才能保证computeScroll()会被调用，否则不一定会刷新界面，看不到滚动效果
     }
+
 
 }
