@@ -267,6 +267,8 @@ public class DisappearingDoodleView2 extends View {
                 canvas.drawPath(e.mPath, e.mPaint);
             }
             compactPaths();
+
+            Log.e("===", "mLines:" + (mLines == null));
         }
         canvas.drawCircle(mLaserX, mLaserY, mCircleRadius, mPaint);
     }
@@ -417,6 +419,8 @@ public class DisappearingDoodleView2 extends View {
 
         long interval = 40 - SystemClock.elapsedRealtime() + mElapsed;
         if(interval < 0) interval = 0;
+        Log.e("===", "interval=" + interval);
+
         Message msg = new Message();
         msg.what = 1;
         mHandler.sendMessageDelayed(msg, interval);
