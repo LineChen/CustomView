@@ -3,19 +3,17 @@ package com.beiing.customview.widgets;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Scroller;
 
 /**
  * Created by chenliu on 2016/9/28.<br/>
- * 描述：淘宝详情页，上拉查看
+ * 描述：淘宝详情页，上拉查看更多
  * </br>
  */
-public class TwoPageScrollView extends LinearLayout {
+public class TwoPageLayout extends LinearLayout {
 
     private ScrollEndScrollView scrollView1;
 
@@ -33,19 +31,24 @@ public class TwoPageScrollView extends LinearLayout {
 
     private Scroller mScroller; //滑动控制器
 
+    private int mMoveY;
+    private int mLastY;
+
     private int mMaxScrollY;//最大移动距离
 
     private int TO_NEXT_PAGE_HEIGHT = 550;//当再移动这个距离，就移动到下一页
 
-    public TwoPageScrollView(Context context) {
+    private byte pageIndex = 0;
+
+    public TwoPageLayout(Context context) {
         this(context, null, 0);
     }
 
-    public TwoPageScrollView(Context context, AttributeSet attrs) {
+    public TwoPageLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public TwoPageScrollView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public TwoPageLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
@@ -125,8 +128,6 @@ public class TwoPageScrollView extends LinearLayout {
         }
     };
 
-    protected int mMoveY;
-    protected int mLastY;
 
     /**
      * @param ev
@@ -152,7 +153,7 @@ public class TwoPageScrollView extends LinearLayout {
                         return true;
                     } else {
                         //向下
-                        if(mScroller.getStartY() != 0){
+                        if(mScroller.getFinalY() != 0){
                             if(getScrollY() + mMoveY > 0){
                                 smoothScrollBy(0, mMoveY);
                                 return true;
@@ -161,7 +162,6 @@ public class TwoPageScrollView extends LinearLayout {
                                 return super.dispatchTouchEvent(ev);
                             }
                         }
-                        return super.dispatchTouchEvent(ev);
                     }
                 }
 
@@ -172,11 +172,13 @@ public class TwoPageScrollView extends LinearLayout {
                         return true;
                     } else {
                         //向上
-                        ////需要改进
-                        if(mScroller.getFinalY() != scrollView1.getHeight()){
+                        if(mScroller.getFinalY() < scrollView1.getHeight()){
+                            smoothScrollBy(0, mMoveY);
                             return true;
+                        } else {
+                            smoothScrollTo(0, scrollView1.getHeight());
+                            return super.dispatchTouchEvent(ev);
                         }
-                        return super.dispatchTouchEvent(ev);
                     }
                 }
                 break;
@@ -186,10 +188,8 @@ public class TwoPageScrollView extends LinearLayout {
                 if(isToBotttom){
                    if(Math.abs(getScrollY()) > TO_NEXT_PAGE_HEIGHT){
                         //移动到第二页
+                       pageIndex = 1;
                        smoothScrollTo(0, scrollView1.getHeight());
-//                        if(mScroller.getFinalY() < scrollView1.getHeight()){
-//                            smoothScrollTo(0, scrollView1.getHeight());
-//                        }
                         isToBotttom = false;
                         isToTop = true;
                     } else {
@@ -199,10 +199,8 @@ public class TwoPageScrollView extends LinearLayout {
                 } else if(isToTop){
                     if(scrollView1.getHeight() - getScrollY() > TO_NEXT_PAGE_HEIGHT){
                         //移动到第一页
+                        pageIndex = 0;
                         smoothScrollTo(0, 0);
-//                        if(mScroller.getFinalY() != 0){
-//                            smoothScrollTo(0, 0);
-//                        }
                         isToBotttom = true;
                         isToTop = false;
                     } else {
