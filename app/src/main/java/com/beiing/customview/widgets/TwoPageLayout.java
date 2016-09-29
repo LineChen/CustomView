@@ -3,6 +3,7 @@ package com.beiing.customview.widgets;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -34,8 +35,6 @@ public class TwoPageLayout extends LinearLayout {
     private int mMoveY;
     private int mLastY;
 
-    private int mMaxScrollY;//最大移动距离
-
     private int TO_NEXT_PAGE_HEIGHT = 550;//当再移动这个距离，就移动到下一页
 
     private byte pageIndex = 0;
@@ -61,8 +60,6 @@ public class TwoPageLayout extends LinearLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        mMaxScrollY = getMeasuredHeight() * 3 / 5;
-
         /**
          * 显示调用第二个自孩子的测量方法，不然尺寸有可能为0
          */
@@ -164,8 +161,7 @@ public class TwoPageLayout extends LinearLayout {
                         }
                     }
                 }
-
-               if(isToTop){
+                else if(isToTop){
                     if(mMoveY < 0){
                         //向下
                         smoothScrollBy(0, mMoveY);
@@ -181,6 +177,14 @@ public class TwoPageLayout extends LinearLayout {
                         }
                     }
                 }
+
+                //处理快速滑动时两页覆盖问题
+                if(pageIndex == 0){
+                    smoothScrollTo(0, 0);
+                } else if(pageIndex == 1){
+                    smoothScrollTo(0, scrollView1.getHeight());
+                }
+
                 break;
 
             case MotionEvent.ACTION_UP:
@@ -190,8 +194,8 @@ public class TwoPageLayout extends LinearLayout {
                         //移动到第二页
                        pageIndex = 1;
                        smoothScrollTo(0, scrollView1.getHeight());
-                        isToBotttom = false;
-                        isToTop = true;
+                       isToBotttom = false;
+                       isToTop = true;
                     } else {
                         //回弹
                         smoothScrollBy(0, -mScroller.getFinalY());
@@ -242,10 +246,6 @@ public class TwoPageLayout extends LinearLayout {
 
     //调用此方法设置滚动的相对偏移
     public void smoothScrollBy(int dx, int dy) {
-        if(dy > 0)
-            dy = Math.min(dy, mMaxScrollY);
-        else
-            dy = Math.max(dy, -mMaxScrollY);
         //设置mScroller的滚动偏移量
         mScroller.startScroll(mScroller.getFinalX(), mScroller.getFinalY(), dx, dy, Math.max(300, Math.abs(dy)));
         invalidate();//这里必须调用invalidate()才能保证computeScroll()会被调用，否则不一定会刷新界面，看不到滚动效果
