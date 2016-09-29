@@ -73,7 +73,8 @@
 
     <com.beiing.customview.widgets.TwoPageLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <com.beiing.customview.widgets.ScrollEndScrollView
             android:layout_width="match_parent"
@@ -163,6 +164,10 @@
 
 
 
+    <com.beiing.customview.widgets.DiffuseView
+        android:id="@+id/diff_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 

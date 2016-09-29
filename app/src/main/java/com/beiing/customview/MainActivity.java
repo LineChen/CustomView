@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.beiing.customview.widgets.ColorTrackView;
+import com.beiing.customview.widgets.DiffuseView;
 import com.beiing.customview.widgets.DynamicHeartView;
 import com.beiing.customview.widgets.ElasticTouchListener;
 import com.beiing.customview.widgets.PtRefreshListView;
@@ -27,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
         dynamicHeartView.startPathAnim(2000);
 
         initPtrListView();
+
+        DiffuseView diffuseView = (DiffuseView) findViewById(R.id.diff_view);
+        diffuseView.start();
     }
 
     private void initPtrListView() {
