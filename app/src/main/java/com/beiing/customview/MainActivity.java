@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.beiing.customview.widgets.ColorTrackView;
 import com.beiing.customview.widgets.DiffuseView;
@@ -51,5 +52,9 @@ public class MainActivity extends AppCompatActivity {
         colorTrackView.setDirection(1);
         ObjectAnimator.ofFloat(colorTrackView, "progress", 0, 1).setDuration(2000)
                 .start();
+    }
+
+    public void btnClick(View view) {
+        Toast.makeText(MainActivity.this, "click not canceled", Toast.LENGTH_SHORT).show();
     }
 }
