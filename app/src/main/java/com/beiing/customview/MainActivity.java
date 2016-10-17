@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.beiing.customview.widgets.ColorTrackView;
+import com.beiing.customview.widgets.DiffuseView;
 import com.beiing.customview.widgets.DynamicHeartView;
 import com.beiing.customview.widgets.ElasticTouchListener;
 import com.beiing.customview.widgets.PtRefreshListView;
@@ -27,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
         dynamicHeartView.startPathAnim(2000);
 
         initPtrListView();
+
+        DiffuseView diffuseView = (DiffuseView) findViewById(R.id.diff_view);
+        diffuseView.start();
     }
 
     private void initPtrListView() {
@@ -47,5 +52,9 @@ public class MainActivity extends AppCompatActivity {
         colorTrackView.setDirection(1);
         ObjectAnimator.ofFloat(colorTrackView, "progress", 0, 1).setDuration(2000)
                 .start();
+    }
+
+    public void btnClick(View view) {
+        Toast.makeText(MainActivity.this, "click not canceled", Toast.LENGTH_SHORT).show();
     }
 }

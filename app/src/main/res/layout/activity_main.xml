@@ -6,6 +6,7 @@
     xmlns:zhy="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.beiing.customview.MainActivity"
+    android:background="@mipmap/author"
     >
 
     <!--<com.beiing.customview.widgets.ClearFrogView-->
@@ -71,9 +72,10 @@
         android:visibility="gone"/>
 
 
-    <com.beiing.customview.widgets.TwoPageScrollView
+    <com.beiing.customview.widgets.TwoPageLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <com.beiing.customview.widgets.ScrollEndScrollView
             android:layout_width="match_parent"
@@ -119,7 +121,7 @@
 
         <com.beiing.customview.widgets.ScrollEndScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -159,11 +161,66 @@
         </com.beiing.customview.widgets.ScrollEndScrollView>
 
 
-    </com.beiing.customview.widgets.TwoPageScrollView>
+    </com.beiing.customview.widgets.TwoPageLayout>
+
+    <com.beiing.customview.widgets.DiffuseView
+        android:id="@+id/diff_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
 
+    <com.beiing.customview.widgets.ElasticLayout2
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <com.beiing.customview.widgets.ScrollEndScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fadingEdge="none"
+            android:overScrollMode="never">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:text="ScrollEndScrollView2"
+                    android:onClick="btnClick"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:text="ScrollEndScrollView2"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:text="ScrollEndScrollView2"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:text="ScrollEndScrollView2"
+                    />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:text="ScrollEndScrollView2"
+                    android:onClick="btnClick"
+                    />
+            </LinearLayout>
+
+        </com.beiing.customview.widgets.ScrollEndScrollView>
+
+    </com.beiing.customview.widgets.ElasticLayout2>
 
 
 </LinearLayout>
