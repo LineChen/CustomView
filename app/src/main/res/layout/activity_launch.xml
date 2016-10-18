@@ -1,0 +1,53 @@
+<com.beiing.customview.widgets.VerticalLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/id_main_ly"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="#fff" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/w02" >
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:text="hello" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/w03" >
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:text="hello" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/w04" >
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:text="hello" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/w05" >
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:text="hello" />
+    </RelativeLayout>
+
+</com.beiing.customview.widgets.VerticalLinearLayout>

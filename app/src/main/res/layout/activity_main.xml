@@ -6,7 +6,6 @@
     xmlns:zhy="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.beiing.customview.MainActivity"
-    android:background="@mipmap/author"
     >
 
     <!--<com.beiing.customview.widgets.ClearFrogView-->
@@ -172,7 +171,8 @@
 
     <com.beiing.customview.widgets.ElasticLayout2
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
         <com.beiing.customview.widgets.ScrollEndScrollView
             android:layout_width="match_parent"
@@ -221,6 +221,25 @@
         </com.beiing.customview.widgets.ScrollEndScrollView>
 
     </com.beiing.customview.widgets.ElasticLayout2>
+
+
+    <com.beiing.customview.widgets.EventParentLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:orientation="vertical">
+        
+        <com.beiing.customview.widgets.EventChildView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#888888"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:onClick="click"/>
+
+    </com.beiing.customview.widgets.EventParentLayout>
 
 
 </LinearLayout>

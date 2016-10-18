@@ -97,6 +97,14 @@ public class ElasticLayout2 extends LinearLayout{
 
     private boolean mIsBeingDragged;
 
+
+    private boolean isIntercept;
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return isIntercept;
+    }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         int action = ev.getAction();
@@ -115,7 +123,6 @@ public class ElasticLayout2 extends LinearLayout{
                     if(mMoveY > 0){
                         //向上
                         smoothScrollBy(0, mMoveY / 2);
-                        requestDisallowInterceptTouchEvent(false);
                         mIsBeingDragged = true;
                         return true;
                     } else {
@@ -124,7 +131,6 @@ public class ElasticLayout2 extends LinearLayout{
                             if(getScrollY() + mMoveY / 2 > 0){
                                 smoothScrollBy(0, mMoveY / 2);
                                 mIsBeingDragged = true;
-                                requestDisallowInterceptTouchEvent(false);
                                 return true;
                             } else{
                                 smoothScrollTo(0, 0);
@@ -138,14 +144,12 @@ public class ElasticLayout2 extends LinearLayout{
                         //向下
                         smoothScrollBy(0, mMoveY / 2);
                         mIsBeingDragged = true;
-                        requestDisallowInterceptTouchEvent(false);
                         return true;
                     } else {
                         //向上
                         if(mScroller.getFinalY() < 0){
                             smoothScrollBy(0, mMoveY / 2);
                             mIsBeingDragged = true;
-                            requestDisallowInterceptTouchEvent(false);
                             return true;
                         }else {
                             smoothScrollTo(0, 0);
@@ -155,7 +159,6 @@ public class ElasticLayout2 extends LinearLayout{
                 }
 
                 smoothScrollTo(0, 0);
-
                 break;
 
             case MotionEvent.ACTION_UP:
