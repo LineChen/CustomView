@@ -61,4 +61,8 @@ public class MainActivity extends AppCompatActivity {
     public void click(View view) {
         Toast.makeText(MainActivity.this, "click not canceled", Toast.LENGTH_SHORT).show();
     }
+
+    public void noCancel(View view) {
+        Toast.makeText(MainActivity.this, "click not canceled", Toast.LENGTH_SHORT).show();
+    }
 }

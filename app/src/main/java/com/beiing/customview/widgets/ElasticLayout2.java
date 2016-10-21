@@ -95,27 +95,16 @@ public class ElasticLayout2 extends LinearLayout{
     protected int mMoveY;
     protected int mLastY;
 
-    private boolean mIsBeingDragged;
-
-
-    private boolean isIntercept;
-
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return isIntercept;
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
         int action = ev.getAction();
         int yPosition = (int) ev.getY();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                mIsBeingDragged = false;
                 mScroller.abortAnimation();
                 mLastY = yPosition;
                 mMoveY = 0;
-                break;
+               break;
             case MotionEvent.ACTION_MOVE:
                 mMoveY = (mLastY - yPosition);
                 mLastY = yPosition;
@@ -123,18 +112,15 @@ public class ElasticLayout2 extends LinearLayout{
                     if(mMoveY > 0){
                         //向上
                         smoothScrollBy(0, mMoveY / 2);
-                        mIsBeingDragged = true;
                         return true;
                     } else {
                         //向下
                         if(mScroller.getFinalY() != 0){
                             if(getScrollY() + mMoveY / 2 > 0){
                                 smoothScrollBy(0, mMoveY / 2);
-                                mIsBeingDragged = true;
                                 return true;
                             } else{
                                 smoothScrollTo(0, 0);
-                                return super.dispatchTouchEvent(ev);
                             }
                         }
                     }
@@ -143,21 +129,68 @@ public class ElasticLayout2 extends LinearLayout{
                     if(mMoveY < 0){
                         //向下
                         smoothScrollBy(0, mMoveY / 2);
-                        mIsBeingDragged = true;
                         return true;
                     } else {
                         //向上
                         if(mScroller.getFinalY() < 0){
                             smoothScrollBy(0, mMoveY / 2);
-                            mIsBeingDragged = true;
                             return true;
                         }else {
                             smoothScrollTo(0, 0);
-                            return super.dispatchTouchEvent(ev);
                         }
                     }
                 }
+                smoothScrollTo(0, 0);
+                break;
+        }
+        return super.onInterceptTouchEvent(ev);
+    }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        int action = ev.getAction();
+        int yPosition = (int) ev.getY();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                mScroller.abortAnimation();
+                mLastY = yPosition;
+                mMoveY = 0;
+               return true;
+            case MotionEvent.ACTION_MOVE:
+                mMoveY = (mLastY - yPosition);
+                mLastY = yPosition;
+                if(isToBotttom){
+                    if(mMoveY > 0){
+                        //向上
+                        smoothScrollBy(0, mMoveY / 2);
+                        return true;
+                    } else {
+                        //向下
+                        if(mScroller.getFinalY() != 0){
+                            if(getScrollY() + mMoveY / 2 > 0){
+                                smoothScrollBy(0, mMoveY / 2);
+                                return true;
+                            } else{
+                                smoothScrollTo(0, 0);
+                            }
+                        }
+                    }
+                }
+                else if(isToTop){
+                    if(mMoveY < 0){
+                        //向下
+                        smoothScrollBy(0, mMoveY / 2);
+                        return true;
+                    } else {
+                        //向上
+                        if(mScroller.getFinalY() < 0){
+                            smoothScrollBy(0, mMoveY / 2);
+                            return true;
+                        }else {
+                            smoothScrollTo(0, 0);
+                        }
+                    }
+                }
                 smoothScrollTo(0, 0);
                 break;
 
@@ -171,7 +204,7 @@ public class ElasticLayout2 extends LinearLayout{
             default:
                 break;
         }
-        return super.dispatchTouchEvent(ev);
+        return super.onTouchEvent(ev);
     }
 
     @Override

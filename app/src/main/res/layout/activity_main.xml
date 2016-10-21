@@ -241,5 +241,35 @@
 
     </com.beiing.customview.widgets.EventParentLayout>
 
+    <com.beiing.customview.widgets.ScrollerLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        >
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="This is first child view"
+            android:onClick="noCancel"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="This is second child view"/>
+
+        <com.beiing.customview.widgets.EventChildView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#888888"
+            android:clickable="false"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="This is third child view"/>
+
+    </com.beiing.customview.widgets.ScrollerLayout>
+
 
 </LinearLayout>
