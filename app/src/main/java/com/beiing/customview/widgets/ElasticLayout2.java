@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
 
@@ -31,6 +32,11 @@ public class ElasticLayout2 extends LinearLayout{
      */
     private boolean isToTop = true;
 
+    /**
+     * 是否大于一屏
+     */
+    private boolean isOverScreen;
+
     private ScrollEndScrollView scrollView;
 
     public ElasticLayout2(Context context) {
@@ -49,46 +55,61 @@ public class ElasticLayout2 extends LinearLayout{
     private void init(Context context) {
         setOrientation(VERTICAL);
         mScroller = new Scroller(context);
+
+        initScrollView();
+
+    }
+
+    private void initScrollView() {
+        scrollView = new ScrollEndScrollView(getContext());
+        scrollView.setOverScrollMode(OVER_SCROLL_NEVER);
+        scrollView.setVerticalFadingEdgeEnabled(false);
+
+        scrollView.addOnScrollEndListener(new ScrollEndScrollView.OnScrollEndListener() {
+            @Override
+            public void scrollToBottom(View view) {
+                isToBotttom = true;
+            }
+
+            @Override
+            public void scrollToTop(View view) {
+                isToTop = true;
+            }
+
+            @Override
+            public void scrollToMiddle(View view) {
+                isToBotttom = false;
+                isToTop = false;
+            }
+        });
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         mMaxScrollY = getMeasuredHeight() * 3 / 5;
+
+        if(scrollView.getMeasuredHeight() < MeasureSpec.getSize(heightMeasureSpec)){
+            //小于一屏幕高度
+            isOverScreen = false;
+        } else {
+            isOverScreen = true;
+        }
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        View child = getChildAt(0);
-        if (child != null) {
-            if(child instanceof ScrollEndScrollView){
-                scrollView = (ScrollEndScrollView) child;
-                scrollView.setVerticalFadingEdgeEnabled(false);
-                scrollView.setOverScrollMode(OVER_SCROLL_NEVER);
-            } else {
-                throw new ClassFormatError("The child must instanceof ScrollEndScrollView.");
-            }
-        }
-
-        if (scrollView != null) {
-            scrollView.addOnScrollEndListener(new ScrollEndScrollView.OnScrollEndListener() {
-                @Override
-                public void scrollToBottom(View view) {
-                    isToBotttom = true;
-                }
-
-                @Override
-                public void scrollToTop(View view) {
-                    isToTop = true;
-                }
-
-                @Override
-                public void scrollToMiddle(View view) {
-                    isToBotttom = false;
-                    isToTop = false;
-                }
-            });
+        int childCount = getChildCount();
+        if(childCount == 0){
+            return;
+        } else if(childCount == 1){
+            View child = getChildAt(0);
+            removeView(child);
+            scrollView.addView(child);
+            addView(scrollView);
+        } else{
+            throw new IllegalStateException("ElasticLayout can host only one direct child");
         }
     }
 
@@ -108,7 +129,33 @@ public class ElasticLayout2 extends LinearLayout{
             case MotionEvent.ACTION_MOVE:
                 mMoveY = (mLastY - yPosition);
                 mLastY = yPosition;
-                if(isToBotttom){
+                if(!isOverScreen){
+                    if(mMoveY < 0){
+                        // 向下
+                        isToTop = true;
+                        isToBotttom = false;
+                    } else if(mMoveY > 0){
+                        isToTop = false;
+                        isToBotttom = true;
+                    }
+                }
+
+
+                if(isToTop){
+                    if(mMoveY < 0){
+                        //向下
+                        smoothScrollBy(0, mMoveY / 2);
+                        return true;
+                    } else {
+                        //向上
+                        if(mScroller.getFinalY() < 0){
+                            smoothScrollBy(0, mMoveY / 2);
+                            return true;
+                        }else {
+                            smoothScrollTo(0, 0);
+                        }
+                    }
+                } else if(isToBotttom){
                     if(mMoveY > 0){
                         //向上
                         smoothScrollBy(0, mMoveY / 2);
@@ -125,22 +172,6 @@ public class ElasticLayout2 extends LinearLayout{
                         }
                     }
                 }
-                else if(isToTop){
-                    if(mMoveY < 0){
-                        //向下
-                        smoothScrollBy(0, mMoveY / 2);
-                        return true;
-                    } else {
-                        //向上
-                        if(mScroller.getFinalY() < 0){
-                            smoothScrollBy(0, mMoveY / 2);
-                            return true;
-                        }else {
-                            smoothScrollTo(0, 0);
-                        }
-                    }
-                }
-                smoothScrollTo(0, 0);
                 break;
         }
         return super.onInterceptTouchEvent(ev);
@@ -159,7 +190,32 @@ public class ElasticLayout2 extends LinearLayout{
             case MotionEvent.ACTION_MOVE:
                 mMoveY = (mLastY - yPosition);
                 mLastY = yPosition;
-                if(isToBotttom){
+                if(!isOverScreen){
+                    if(mMoveY < 0){
+                        // 向下
+                        isToTop = true;
+                        isToBotttom = false;
+                    } else if(mMoveY > 0){
+                        isToTop = false;
+                        isToBotttom = true;
+                    }
+                }
+
+                if(isToTop){
+                    if(mMoveY < 0){
+                        //向下
+                        smoothScrollBy(0, mMoveY / 2);
+                        return true;
+                    } else {
+                        //向上
+                        if(mScroller.getFinalY() < 0){
+                            smoothScrollBy(0, mMoveY / 2);
+                            return true;
+                        }else {
+                            smoothScrollTo(0, 0);
+                        }
+                    }
+                } else  if(isToBotttom){
                     if(mMoveY > 0){
                         //向上
                         smoothScrollBy(0, mMoveY / 2);
@@ -176,21 +232,7 @@ public class ElasticLayout2 extends LinearLayout{
                         }
                     }
                 }
-                else if(isToTop){
-                    if(mMoveY < 0){
-                        //向下
-                        smoothScrollBy(0, mMoveY / 2);
-                        return true;
-                    } else {
-                        //向上
-                        if(mScroller.getFinalY() < 0){
-                            smoothScrollBy(0, mMoveY / 2);
-                            return true;
-                        }else {
-                            smoothScrollTo(0, 0);
-                        }
-                    }
-                }
+
                 smoothScrollTo(0, 0);
                 break;
 

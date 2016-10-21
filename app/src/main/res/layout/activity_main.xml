@@ -174,12 +174,6 @@
         android:layout_height="match_parent"
         android:visibility="visible">
 
-        <com.beiing.customview.widgets.ScrollEndScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fadingEdge="none"
-            android:overScrollMode="never">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -193,10 +187,10 @@
                     />
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:text="ScrollEndScrollView2"
-                    />
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:text="ScrollEndScrollView2"
+                />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -217,8 +211,6 @@
                     android:onClick="btnClick"
                     />
             </LinearLayout>
-
-        </com.beiing.customview.widgets.ScrollEndScrollView>
 
     </com.beiing.customview.widgets.ElasticLayout2>
 
