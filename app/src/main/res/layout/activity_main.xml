@@ -172,7 +172,7 @@
     <com.beiing.customview.widgets.ElasticLayout2
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -262,6 +262,15 @@
             android:text="This is third child view"/>
 
     </com.beiing.customview.widgets.ScrollerLayout>
+
+
+    <com.beiing.customview.widgets.calendar.MonthView
+        android:id="@+id/monthView1"
+        android:padding="20dp"
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </com.beiing.customview.widgets.calendar.MonthView>
 
 
 </LinearLayout>

@@ -80,7 +80,6 @@ public class TailView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         paint.setStrokeWidth(5);
-
         RadialGradient shader = new RadialGradient(mOriginX, mOriginY, getRadius(mOriginX, mOriginY, mCurrentX, mCurrentY),
                 new int[]{Color.parseColor("#22ff0000"), Color.parseColor("#ff0000")}, new float[]{0.3f, 0.7f}, Shader.TileMode.CLAMP);
         paint.setShader(shader);
