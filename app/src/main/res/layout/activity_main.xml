@@ -269,8 +269,14 @@
         android:padding="20dp"
         android:background="#ffffff"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:visibility="gone">
     </com.beiing.customview.widgets.calendar.MonthView>
+
+
+    <com.beiing.customview.widget2.ShaderView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </LinearLayout>
