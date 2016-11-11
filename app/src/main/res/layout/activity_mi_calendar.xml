@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <com.beiing.customview.widgets.calendar2.CollapseCalendarView
+        android:id="@+id/calendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <TextView android:layout_width="match_parent"
+            android:layout_height="33.3dp"
+            android:text="今日事项（共10件）"
+            android:gravity="center_vertical"
+            android:textSize="12sp"
+            android:paddingLeft="13.3dp"
+            android:background="@color/days_title"/>
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/calendar"
+            android:background="@android:color/white" />
+    </com.beiing.customview.widgets.calendar2.CollapseCalendarView>
+</RelativeLayout>

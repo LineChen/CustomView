@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="46.7dp"
+    android:paddingTop="6.7dp"
+    android:paddingBottom="6.7dp"
+    android:gravity="center"
+    android:background="@drawable/bg_btn_calendar"
+    android:orientation="vertical">
+    
+<com.beiing.customview.widgets.calendar2.widget.DayView
+    android:id="@+id/tvDayView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="16sp"
+    android:textColor="@color/text_calendar"/>
+<com.beiing.customview.widgets.calendar2.widget.DayView
+    android:id="@+id/tvChinaDay"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:textColor="@color/text_calendar"
+    android:textSize="10sp"/>
+</LinearLayout>

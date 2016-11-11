@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">CustomView</string>
     <string name="title_activity_launch">LaunchActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="time_next">Next</string>
+    <string name="time_prev">Previous</string>
+
 </resources>
