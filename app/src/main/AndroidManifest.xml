@@ -9,21 +9,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
+
+        </activity>
+        <activity
+            android:name=".LaunchActivity"
+            android:label="@string/title_activity_launch"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".TestScroActivity"></activity>
+        <activity android:name=".MiCalendarActivity"></activity>
+        <activity android:name=".Main2Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".LaunchActivity"
-            android:label="@string/title_activity_launch"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".TestScroActivity">
-        </activity>
-        <activity android:name=".MiCalendarActivity">
 
-        </activity>
+
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/> <!-- optional (needed if default theme has no action bar) -->
+
     </application>
+
 
 </manifest>

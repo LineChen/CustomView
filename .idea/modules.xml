@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CustomView.iml" filepath="$PROJECT_DIR$/CustomView.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Image-Cropper/Image-Cropper.iml" filepath="$PROJECT_DIR$/Image-Cropper/Image-Cropper.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
