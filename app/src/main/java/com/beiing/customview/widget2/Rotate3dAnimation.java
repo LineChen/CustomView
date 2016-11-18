@@ -1,5 +1,6 @@
 package com.beiing.customview.widget2;
 
+import android.content.Context;
 import android.graphics.Camera;
 import android.graphics.Matrix;
 import android.view.animation.Animation;
@@ -7,7 +8,7 @@ import android.view.animation.Transformation;
 
 /**
  * Created by chenliu on 2016/11/17.<br/>
- * 描述：
+ * 描述：3D翻转动画
  * </br>
  */
 public class Rotate3dAnimation extends Animation {
@@ -18,6 +19,8 @@ public class Rotate3dAnimation extends Animation {
     private final float mDepthZ;
     private final boolean mReverse;
     private Camera mCamera;
+
+    float scale = 1; // <------- 像素密度
     /**
      * 创建一个绕y轴旋转的3D动画效果，旋转过程中具有深度调节，可以指定旋转中心。
      *
@@ -28,7 +31,7 @@ public class Rotate3dAnimation extends Animation {
      * @param depthZ		最远到达的z轴坐标
      * @param reverse 		true 表示由从0到depthZ，false相反
      */
-    public Rotate3dAnimation(float fromDegrees, float toDegrees,
+    public Rotate3dAnimation(Context context, float fromDegrees, float toDegrees,
                              float centerX, float centerY, float depthZ, boolean reverse) {
         mFromDegrees = fromDegrees;
         mToDegrees = toDegrees;
@@ -36,6 +39,9 @@ public class Rotate3dAnimation extends Animation {
         mCenterY = centerY;
         mDepthZ = depthZ;
         mReverse = reverse;
+
+        // 获取手机像素密度 （即dp与px的比例）
+        scale = context.getResources().getDisplayMetrics().density;
     }
     @Override
     public void initialize(int width, int height, int parentWidth, int parentHeight) {
@@ -64,6 +70,13 @@ public class Rotate3dAnimation extends Animation {
 
         camera.getMatrix(matrix);
         camera.restore();
+
+        // 修正失真，主要修改 MPERSP_0 和 MPERSP_1
+        float[] mValues = new float[9];
+        matrix.getValues(mValues); //获取数值
+        mValues[Matrix.MPERSP_0] = mValues[Matrix.MPERSP_0]/scale; //数值修正
+        mValues[Matrix.MPERSP_1] = mValues[Matrix.MPERSP_1]/scale; //数值修正
+        matrix.setValues(mValues); //重新赋值
 
         // 调节中心点
         matrix.preTranslate(-centerX, -centerY);

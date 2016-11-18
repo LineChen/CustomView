@@ -42,7 +42,7 @@ public class Main2Activity extends AppCompatActivity {
                 final float centerY = v.getHeight() / 2.0f;
 
                 //括号内参数分别为（上下文，开始角度，结束角度，x轴中心点，y轴中心点，深度，是否扭曲）
-                final Rotate3dAnimation rotation = new Rotate3dAnimation(0, 180, centerX, centerY, 10, true);
+                final Rotate3dAnimation rotation = new Rotate3dAnimation(Main2Activity.this, 0, 180, centerX, centerY, 10, true);
 
                 rotation.setDuration(3000);                         //设置动画时长
                 rotation.setFillAfter(true);                        //保持旋转后效果
