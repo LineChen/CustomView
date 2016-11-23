@@ -1,0 +1,15 @@
+int attr leftBottomRadius 0x7f010005
+int attr leftTopRadius 0x7f010002
+int attr rightBottomRadius 0x7f010004
+int attr rightTopRadius 0x7f010003
+int attr round_borderColor 0x7f010001
+int attr round_borderWidth 0x7f010000
+int string app_name 0x7f020000
+int[] styleable AbsRoundImageView { 0x7f010000, 0x7f010001 }
+int styleable AbsRoundImageView_round_borderColor 1
+int styleable AbsRoundImageView_round_borderWidth 0
+int[] styleable RoundImageView { 0x7f010002, 0x7f010003, 0x7f010004, 0x7f010005 }
+int styleable RoundImageView_leftBottomRadius 3
+int styleable RoundImageView_leftTopRadius 0
+int styleable RoundImageView_rightBottomRadius 2
+int styleable RoundImageView_rightTopRadius 1

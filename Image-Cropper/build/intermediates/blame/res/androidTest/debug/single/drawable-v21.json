@@ -1,9 +1,5 @@
 [
     {
-        "merged": "E:\\Android-yigu\\yayiDoctor\\Image-Cropper\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-v21\\abc_edit_text_material.xml",
-        "source": "E:\\Android-yigu\\yayiDoctor\\Image-Cropper\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable-v21\\abc_edit_text_material.xml"
-    },
-    {
         "merged": "F:\\AS-4\\CustomView\\Image-Cropper\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-v21\\abc_btn_colored_material.xml",
         "source": "F:\\AS-4\\CustomView\\Image-Cropper\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable-v21\\abc_btn_colored_material.xml"
     },
@@ -12,15 +8,11 @@
         "source": "F:\\AS-4\\CustomView\\Image-Cropper\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable-v21\\abc_edit_text_material.xml"
     },
     {
+        "merged": "F:\\AS-4\\CustomView\\Image-Cropper\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-v21\\bg_textview.xml",
+        "source": "F:\\AS-4\\CustomView\\Image-Cropper\\build\\intermediates\\bundles\\debug\\res\\drawable-v21\\bg_textview.xml"
+    },
+    {
         "merged": "F:\\AS-4\\CustomView\\Image-Cropper\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-v21\\abc_action_bar_item_background_material.xml",
         "source": "F:\\AS-4\\CustomView\\Image-Cropper\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable-v21\\abc_action_bar_item_background_material.xml"
-    },
-    {
-        "merged": "E:\\Android-yigu\\yayiDoctor\\Image-Cropper\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-v21\\abc_btn_colored_material.xml",
-        "source": "E:\\Android-yigu\\yayiDoctor\\Image-Cropper\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable-v21\\abc_btn_colored_material.xml"
-    },
-    {
-        "merged": "E:\\Android-yigu\\yayiDoctor\\Image-Cropper\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-v21\\abc_action_bar_item_background_material.xml",
-        "source": "E:\\Android-yigu\\yayiDoctor\\Image-Cropper\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable-v21\\abc_action_bar_item_background_material.xml"
     }
 ]

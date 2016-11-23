@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/CustomView.iml" filepath="$PROJECT_DIR$/CustomView.iml" />
       <module fileurl="file://$PROJECT_DIR$/Image-Cropper/Image-Cropper.iml" filepath="$PROJECT_DIR$/Image-Cropper/Image-Cropper.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/leafchart-v2/leafchart-v2.iml" filepath="$PROJECT_DIR$/leafchart-v2/leafchart-v2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/roundimageview/roundimageview.iml" filepath="$PROJECT_DIR$/roundimageview/roundimageview.iml" />
     </modules>
   </component>
 </project>

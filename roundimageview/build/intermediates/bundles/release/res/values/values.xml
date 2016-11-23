@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AbsRoundImageView"><attr format="dimension|reference" name="round_borderWidth"/><attr format="color|reference" name="round_borderColor"/></declare-styleable>
+    <declare-styleable name="RoundImageView"><attr format="dimension|reference" name="leftTopRadius"/><attr format="dimension|reference" name="rightTopRadius"/><attr format="dimension|reference" name="rightBottomRadius"/><attr format="dimension|reference" name="leftBottomRadius"/></declare-styleable>
+    <string name="app_name">roundimageview</string>
+</resources>

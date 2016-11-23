@@ -1,1 +1,1 @@
-include ':app',':Image-Cropper'
+include ':app',':Image-Cropper',':roundimageview',':leafchart-v2'

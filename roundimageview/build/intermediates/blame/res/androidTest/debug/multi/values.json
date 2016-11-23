@@ -1,0 +1,26 @@
+[
+    {
+        "outputFile": "F:\\AS-4\\CustomView\\roundimageview\\build\\intermediates\\res\\merged\\androidTest\\debug\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 544,
+                    "endColumn": 51,
+                    "endOffset": 591
+                },
+                "from": {
+                    "file": "F:\\AS-4\\CustomView\\roundimageview\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 544,
+                        "endColumn": 51,
+                        "endOffset": 591
+                    }
+                }
+            }
+        ]
+    }
+]
