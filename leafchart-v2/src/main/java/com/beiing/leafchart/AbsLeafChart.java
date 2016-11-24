@@ -16,7 +16,6 @@ import com.beiing.leafchart.bean.ChartData;
 import com.beiing.leafchart.bean.PointValue;
 import com.beiing.leafchart.support.Chart;
 import com.beiing.leafchart.support.LeafUtil;
-import com.beiing.leafchart_v2.R;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ import java.util.List;
  * 描述：
  * </br>
  */
-public abstract class AbsLeafChart extends View implements Chart{
+public abstract class AbsLeafChart extends View implements Chart {
 
     private static class Mode{
         /**

@@ -12,7 +12,6 @@ import android.graphics.PathEffect;
 import android.graphics.PathMeasure;
 import android.util.AttributeSet;
 
-import com.beiing.leafchart.bean.ChartData;
 import com.beiing.leafchart.bean.Line;
 import com.beiing.leafchart.bean.PointValue;
 import com.beiing.leafchart.support.LeafUtil;
@@ -27,8 +26,6 @@ import java.util.List;
 public class LeafLineChart extends AbsLeafChart {
 
     private static final float LINE_SMOOTHNESS = 0.16f;
-
-//    private Path path = new Path();
 
     private PathMeasure measure;
 
@@ -68,18 +65,22 @@ public class LeafLineChart extends AbsLeafChart {
      */
     @Override
     protected void resetPointWeight() {
-        for (int i = 0, size = lines.size(); i < size; i++) {
-            super.resetPointWeight(lines.get(i));
+        if (lines != null) {
+            for (int i = 0, size = lines.size(); i < size; i++) {
+                super.resetPointWeight(lines.get(i));
+            }
         }
     }
 
     /**
-    * 确定每个点所在位置
-   */
+     * 确定每个点所在位置
+     */
     @Override
     protected void setPointsLoc() {
-        for (int i = 0, size = lines.size(); i < size; i++) {
-            super.setPointsLoc(lines.get(i));
+        if (lines != null) {
+            for (int i = 0, size = lines.size(); i < size; i++) {
+                super.setPointsLoc(lines.get(i));
+            }
         }
     }
 
@@ -90,7 +91,7 @@ public class LeafLineChart extends AbsLeafChart {
         if (lines != null && lines.size() > 0) {
             Line line;
             for (int i = 0, size = lines.size(); i < size; i++) {
-               line = lines.get(i);
+                line = lines.get(i);
                 if(line != null && isShow){
                     if(line.isCubic()) {
                         drawCubicPath(canvas, line);
@@ -238,7 +239,7 @@ public class LeafLineChart extends AbsLeafChart {
     /**
      * 填充
      * @param canvas
-    */
+     */
     private void drawFillArea(Canvas canvas, Line line) {
         //继续使用前面的 path
         if(line != null && line.getValues().size() > 1){
@@ -338,7 +339,6 @@ public class LeafLineChart extends AbsLeafChart {
         showWithAnimation(0);
     }
 
-
     private boolean isInArea(float x, float y, float touchX, float touchY, float radius) {
         float diffX = touchX - x;
         float diffY = touchY - y;
@@ -347,6 +347,7 @@ public class LeafLineChart extends AbsLeafChart {
 
     public void setChartData(List<Line> chartDatas) {
         lines = chartDatas;
+        resetPointWeight();
     }
 
     public List<Line> getChartData() {
