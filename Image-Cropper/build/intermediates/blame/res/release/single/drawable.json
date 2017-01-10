@@ -28,12 +28,12 @@
         "source": "F:\\AS-4\\CustomView\\Image-Cropper\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable\\abc_btn_default_mtrl_shape.xml"
     },
     {
-        "merged": "F:\\AS-4\\CustomView\\Image-Cropper\\build\\intermediates\\res\\merged\\release\\drawable\\abc_btn_colored_material.xml",
-        "source": "F:\\AS-4\\CustomView\\Image-Cropper\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable\\abc_btn_colored_material.xml"
-    },
-    {
         "merged": "F:\\AS-4\\CustomView\\Image-Cropper\\build\\intermediates\\res\\merged\\release\\drawable\\abc_cab_background_internal_bg.xml",
         "source": "F:\\AS-4\\CustomView\\Image-Cropper\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable\\abc_cab_background_internal_bg.xml"
+    },
+    {
+        "merged": "F:\\AS-4\\CustomView\\Image-Cropper\\build\\intermediates\\res\\merged\\release\\drawable\\abc_btn_colored_material.xml",
+        "source": "F:\\AS-4\\CustomView\\Image-Cropper\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable\\abc_btn_colored_material.xml"
     },
     {
         "merged": "F:\\AS-4\\CustomView\\Image-Cropper\\build\\intermediates\\res\\merged\\release\\drawable\\abc_btn_radio_material.xml",

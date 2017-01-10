@@ -27,5 +27,9 @@
         android:visibility="visible"
         />
 
+    <com.beiing.customview.widget2.LinearGradientView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 
 </LinearLayout>

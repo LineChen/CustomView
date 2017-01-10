@@ -5,11 +5,14 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.DashPathEffect;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathEffect;
 import android.graphics.PathMeasure;
+import android.graphics.Shader;
 import android.util.AttributeSet;
 
 import com.beiing.leafchart.bean.Line;
@@ -27,7 +30,7 @@ public class LeafLineChart extends AbsLeafChart {
 
     private static final float LINE_SMOOTHNESS = 0.16f;
 
-    private PathMeasure measure;
+    private PathMeasure measure = new PathMeasure();
 
     /**
      * 动画结束标志
@@ -43,6 +46,10 @@ public class LeafLineChart extends AbsLeafChart {
 
     private List<Line> lines;
 
+    private Paint fillPaint;
+
+    LinearGradient fillShader;
+
     public LeafLineChart(Context context) {
         this(context, null, 0);
     }
@@ -53,6 +60,14 @@ public class LeafLineChart extends AbsLeafChart {
 
     public LeafLineChart(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    protected void initPaint() {
+        super.initPaint();
+
+        fillPaint = new Paint();
+        fillPaint.setStyle(Paint.Style.FILL);
     }
 
     @Override
@@ -94,7 +109,7 @@ public class LeafLineChart extends AbsLeafChart {
                 line = lines.get(i);
                 if(line != null && isShow){
                     if(line.isCubic()) {
-                        drawCubicPath(canvas, line);
+//                        drawCubicPath(canvas, line);
                     } else {
                         drawLines(canvas, line);
                     }
@@ -134,13 +149,11 @@ public class LeafLineChart extends AbsLeafChart {
                 else  path.lineTo(point.getOriginX(), point.getOriginY());
             }
 
-            measure = new PathMeasure(path, false);
+            measure.setPath(path, false);
             linePaint.setPathEffect(createPathEffect(measure == null ? 0 : measure.getLength(), phase, 0.0f));
             canvas.drawPath(path, linePaint);
-
         }
     }
-
 
     /**
      * 画曲线
@@ -166,7 +179,7 @@ public class LeafLineChart extends AbsLeafChart {
             final int lineSize = values.size();
             for (int valueIndex = 0; valueIndex < lineSize; ++valueIndex) {
                 if (Float.isNaN(currentPointX)) {
-                    PointValue linePoint = (PointValue) values.get(valueIndex);
+                    PointValue linePoint = values.get(valueIndex);
                     currentPointX = linePoint.getOriginX();
                     currentPointY = linePoint.getOriginY();
                 }
@@ -229,7 +242,7 @@ public class LeafLineChart extends AbsLeafChart {
                 currentPointY = nextPointY;
             }
 
-            measure = new PathMeasure(path, false);
+            measure.setPath(path, false);
             linePaint.setPathEffect(createPathEffect(measure == null ? 0 : measure.getLength(), phase, 0.0f));
             canvas.drawPath(path, linePaint);
         }
@@ -254,15 +267,17 @@ public class LeafLineChart extends AbsLeafChart {
             path.lineTo(firstX, axisX.getStartY());
             path.close();
 
-            linePaint.setStyle(Paint.Style.FILL);
+            if(fillShader == null){
+                fillShader = new LinearGradient(0, 0, 0, mHeight, line.getFillColr(), Color.TRANSPARENT, Shader.TileMode.CLAMP);
+                fillPaint.setShader(fillShader);
+            }
             if(line.getFillColr() == 0)
-                linePaint.setAlpha(100);
+                fillPaint.setAlpha(100);
             else
-                linePaint.setColor(line.getFillColr());
-
+                fillPaint.setColor(line.getFillColr());
             canvas.save(Canvas.CLIP_SAVE_FLAG);
             canvas.clipRect(firstX, 0, phase * (lastX - firstX) + firstX, getMeasuredHeight());
-            canvas.drawPath(path, linePaint);
+            canvas.drawPath(path, fillPaint);
             canvas.restore();
             path.reset();
         }

@@ -71,7 +71,7 @@ public class Main3Activity extends AppCompatActivity {
         lines.add(getCompareLine());
         lineChart.setChartData(lines);
 
-        lineChart.showWithAnimation(3000);
+        lineChart.showWithAnimation(2000);
 
     }
 
@@ -110,9 +110,10 @@ public class Main3Activity extends AppCompatActivity {
         line.setLineColor(Color.parseColor("#33B5E5"))
                 .setLineWidth(3)
                 .setPointColor(Color.YELLOW)
-                .setCubic(true)
+                .setCubic(false)
                 .setPointRadius(3)
                 .setFill(true)
+                .setFillColr(Color.parseColor("#33B5E5"))
                 .setHasLabels(true)
                 .setLabelColor(Color.parseColor("#33B5E5"));
         return line;

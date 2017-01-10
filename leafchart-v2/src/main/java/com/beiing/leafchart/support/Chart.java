@@ -1,9 +1,6 @@
 package com.beiing.leafchart.support;
 
 import com.beiing.leafchart.bean.Axis;
-import com.beiing.leafchart.bean.ChartData;
-
-import java.util.List;
 
 /**
  * Created by chenliu on 2016/7/15.<br/>

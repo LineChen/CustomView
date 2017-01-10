@@ -10,7 +10,7 @@ import java.util.List;
  * 描述：线
  * </br>
  */
-public class Line extends ChartData{
+public class Line extends ChartData {
     private int lineColor = Color.GRAY; //折线颜色
     private int lineWidth = 1; // 折线的宽度dp
     private boolean hasPoints = true; //是否画圆点

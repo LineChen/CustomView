@@ -7,8 +7,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.support.v4.view.GestureDetectorCompat;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Scroller;
 
 import com.beiing.leafchart.bean.Axis;
 import com.beiing.leafchart.bean.AxisValue;
@@ -16,6 +21,7 @@ import com.beiing.leafchart.bean.ChartData;
 import com.beiing.leafchart.bean.PointValue;
 import com.beiing.leafchart.support.Chart;
 import com.beiing.leafchart.support.LeafUtil;
+import com.beiing.leafchart.support.Mode;
 
 import java.util.List;
 
@@ -26,28 +32,7 @@ import java.util.List;
  */
 public abstract class AbsLeafChart extends View implements Chart {
 
-    private static class Mode{
-        /**
-         * 交叉，x、y轴都超出0点
-         */
-        public static final int ACROSS = 1;
-
-        /**
-         * 相交， x、y轴交于0点
-         */
-        public static final int INTERSECT = 2;
-
-        /**
-         * x轴超出0点
-         */
-        public static final int X_ACROSS = 3;
-
-        /**
-         * y轴超出0点
-         */
-        public static final int Y_ACROSS = 4;
-
-    }
+    private static final String TAG = "AbsLeafChart";
 
     /**
      * 坐标轴原点处模式
@@ -63,6 +48,9 @@ public abstract class AbsLeafChart extends View implements Chart {
      */
     protected int startMarginY = 0;
 
+    /**
+     * 坐标轴
+     */
     protected Axis axisX;
     protected Axis axisY;
 
@@ -70,19 +58,30 @@ public abstract class AbsLeafChart extends View implements Chart {
     protected float mHeight;//控件高度
     protected float leftPadding, topPadding, rightPadding, bottomPadding;//控件内部间隔
 
+    protected float xStepWidth;//两点横向间距
+
     protected Context mContext;
+
     /**
-     * 坐标轴
+     * 坐标轴画笔
      */
     protected Paint paint;
     /**
      * 折线图、直方图
      */
     protected Paint linePaint;
+
     /**
      * 标签
      */
     protected Paint labelPaint;
+
+
+    protected  int mLastX, mMove;
+
+    private Scroller mScroller;
+
+    private GestureDetectorCompat gestureDetector;
 
     public AbsLeafChart(Context context) {
         this(context, null, 0);
@@ -99,6 +98,8 @@ public abstract class AbsLeafChart extends View implements Chart {
         initAttrs(attrs);
 
         initPaint();
+
+        initTouchs();
     }
 
     private void initAttrs(AttributeSet attrs) {
@@ -109,8 +110,9 @@ public abstract class AbsLeafChart extends View implements Chart {
             coordinateMode = ta.getInteger(R.styleable.AbsLeafChart_coordinateMode, Mode.INTERSECT);
             ta.recycle();
         }
-    }
 
+        xStepWidth = LeafUtil.dp2px(mContext, 30);
+    }
 
     protected void initPaint() {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -118,6 +120,12 @@ public abstract class AbsLeafChart extends View implements Chart {
         linePaint.setStrokeCap(Paint.Cap.ROUND);
         labelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
+
+    private void initTouchs() {
+        mScroller = new Scroller(mContext);
+        gestureDetector = new GestureDetectorCompat(getContext(), new SimpleGestureListener());
+    }
+
 
     /**
      * 不重写改方法，在布局中使用 wrap_content 显示效果是 match_parent
@@ -151,6 +159,8 @@ public abstract class AbsLeafChart extends View implements Chart {
         resetAsixSize();
 
         resetPointWeight();
+
+        setPointsLoc();
 
     }
 
@@ -206,14 +216,14 @@ public abstract class AbsLeafChart extends View implements Chart {
         if(axisX != null){
             List<AxisValue> values = axisX.getValues();
             int sizeX = values.size(); //几条y轴
-            float xStep = (mWidth - leftPadding - startMarginX) / sizeX;
+//            float xStep = (mWidth - leftPadding - startMarginX) / sizeX;
             for (int i = 0; i < sizeX; i++) {
                 AxisValue axisValue = values.get(i);
                 axisValue.setPointY(mHeight);
                 if(i == 0){
                     axisValue.setPointX(leftPadding + startMarginX);
                 } else {
-                    axisValue.setPointX(leftPadding + startMarginX + xStep * i);
+                    axisValue.setPointX(leftPadding + startMarginX + xStepWidth * i);
                 }
             }
 
@@ -233,7 +243,6 @@ public abstract class AbsLeafChart extends View implements Chart {
         }
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -241,8 +250,6 @@ public abstract class AbsLeafChart extends View implements Chart {
         drawCoordinateLines(canvas);
 
         drawCoordinateText(canvas);
-
-        setPointsLoc();
     }
 
     /**
@@ -312,7 +319,7 @@ public abstract class AbsLeafChart extends View implements Chart {
                 for (int i = 0; i < valuesX.size(); i++) {
                     AxisValue value = valuesX.get(i);
                     float textW = paint.measureText(value.getLabel());
-                    canvas.drawText(value.getLabel(), value.getPointX() - textW / 2,  value.getPointY() - textH / 2,paint);
+                    canvas.drawText(value.getLabel(), value.getPointX() - textW / 2 + mMove,  value.getPointY() - textH / 2,paint);
                 }
             }
 
@@ -342,7 +349,6 @@ public abstract class AbsLeafChart extends View implements Chart {
             if(chartData.isHasLabels()){
                 labelPaint.setTextSize(LeafUtil.sp2px(mContext, 12));
 
-                Paint.FontMetrics fontMetrics = labelPaint.getFontMetrics();
                 List<PointValue> values = chartData.getValues();
                 int size = values.size();
                 for (int i = 0; i < size; i++) {
@@ -368,20 +374,10 @@ public abstract class AbsLeafChart extends View implements Chart {
                     top = point.getOriginY() - 2.5f*textH;
                     bottom = point.getOriginY() - 0.5f*textH;
 
-//                    if(i > 0){
-//                        PointValue prePoint = values.get(i - 1);
-//                        RectF rectF = prePoint.getRectF();
-//                        if(left <= rectF.right){
-//                            // 左边与上一个标签重叠
-//                            top = point.getOriginY() + 1.7f*textH;
-//                            bottom = point.getOriginY() + 0.5f*textH;
-//                        }
-//                    }
-
                     //控制位置
-                    if(left < 0){
-                        left = leftPadding;
-                        right += leftPadding;
+                    if(left < axisY.getStartX()){
+                        left = axisY.getStartX();
+                        right += left;
                     }
                     if(top < 0){
                         top = topPadding;
@@ -407,10 +403,15 @@ public abstract class AbsLeafChart extends View implements Chart {
         }
     }
 
+
     protected abstract void resetPointWeight();
 
     protected abstract void setPointsLoc();
 
+    /**
+     * 计算点坐标
+     * @param chartData
+     */
     protected void resetPointWeight(ChartData chartData) {
         if(chartData != null && axisX != null && axisY != null){
             List<PointValue> values = chartData.getValues();
@@ -433,7 +434,7 @@ public abstract class AbsLeafChart extends View implements Chart {
     }
 
     protected void setPointsLoc(ChartData chartData) {
-        if(chartData != null){
+        if(chartData != null && axisX != null && axisY != null){
             List<PointValue> values = chartData.getValues();
             int size = values.size();
             for (int i = 0; i < size; i++) {
@@ -444,6 +445,48 @@ public abstract class AbsLeafChart extends View implements Chart {
             }
         }
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        gestureDetector.onTouchEvent(event);
+        int xPosition = (int) event.getX();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mScroller.abortAnimation();
+                mLastX = xPosition;
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                smoothScrollBy(xPosition - mLastX, 0);
+                break;
+        }
+        mLastX = xPosition;
+        return true;
+    }
+
+    //调用此方法设置滚动的相对偏移
+    public void smoothScrollBy(int dx, int dy) {
+        //设置mScroller的滚动偏移量
+        mScroller.startScroll(mScroller.getFinalX(), mScroller.getFinalY(), dx, dy);
+        invalidate();//这里必须调用invalidate()才能保证computeScroll()会被调用，否则不一定会刷新界面，看不到滚动效果
+    }
+
+    @Override
+    public void computeScroll() {
+        if (mScroller.computeScrollOffset()) {
+            mMove = mScroller.getCurrX();
+            postInvalidate();
+        }
+    }
+
+    private class SimpleGestureListener extends
+            GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            mScroller.fling(mMove, 0, (int)velocityX, (int)velocityY, -getMeasuredWidth(), getMeasuredWidth(), 0, 0);
+            return true;
+        }
+    }
+
 
     @Override
     public void setAxisX(Axis axisX) {
